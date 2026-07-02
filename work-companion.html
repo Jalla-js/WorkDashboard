@@ -1,0 +1,3530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Work Companion">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Work Companion</title>
+  <style>
+/* ============================================================
+   WORK COMPANION — Design System
+   Dark glassmorphism · iOS-first · Amazon DSP aesthetic
+   ============================================================ */
+
+:root {
+  /* Palette */
+  --bg-base:        #0a0a0f;
+  --bg-surface:     #0f0f1a;
+  --bg-elevated:    #15152a;
+  --glass-bg:       rgba(255,255,255,0.04);
+  --glass-border:   rgba(255,255,255,0.08);
+  --glass-hover:    rgba(255,255,255,0.07);
+
+  /* Brand accent — Amazon arrow-orange, desaturated for dark UI */
+  --accent:         #ff9900;
+  --accent-dim:     rgba(255,153,0,0.15);
+  --accent-glow:    rgba(255,153,0,0.25);
+
+  /* Status colors */
+  --success:        #34d399;
+  --success-dim:    rgba(52,211,153,0.12);
+  --warning:        #fbbf24;
+  --warning-dim:    rgba(251,191,36,0.12);
+  --danger:         #f87171;
+  --danger-dim:     rgba(248,113,113,0.12);
+  --info:           #60a5fa;
+  --info-dim:       rgba(96,165,250,0.12);
+
+  /* Tier colors (Amazon DSP tiers) */
+  --tier-fp:        #a78bfa;   /* Fantastic Plus */
+  --tier-f:         #60a5fa;   /* Fantastic */
+  --tier-g:         #34d399;   /* Great */
+  --tier-poor:      #f87171;   /* Poor */
+
+  /* Typography */
+  --text-primary:   #f0f0f8;
+  --text-secondary: rgba(240,240,248,0.55);
+  --text-tertiary:  rgba(240,240,248,0.30);
+
+  /* Type scale */
+  --font-display:  'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body:     'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:     'SF Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+
+  /* Radius */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card:   0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-modal:  0 -8px 48px rgba(0,0,0,0.7);
+  --shadow-glow-accent: 0 0 24px rgba(255,153,0,0.2);
+
+  /* Navigation */
+  --nav-height:    72px;
+  --header-height: 56px;
+  --safe-bottom:   env(safe-area-inset-bottom, 0px);
+  --safe-top:      env(safe-area-inset-top, 0px);
+
+  /* Transitions */
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:      150ms;
+  --dur-normal:    250ms;
+  --dur-slow:      400ms;
+}
+
+/* ============================================================ RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  height: 100%;
+  background: var(--bg-base);
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, select, textarea { font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ============================================================ APP SHELL */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.status-bar-spacer {
+  height: var(--safe-top);
+  background: transparent;
+}
+
+/* ============================================================ HEADER */
+#app-header {
+  height: var(--header-height);
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(10,10,15,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.header-logo {
+  font-size: 22px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ============================================================ ICON BUTTONS */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  position: relative;
+  transition: background var(--dur-fast) var(--ease-smooth),
+              border-color var(--dur-fast) var(--ease-smooth),
+              transform var(--dur-fast) var(--ease-spring);
+}
+
+.icon-btn:active { transform: scale(0.93); }
+.icon-btn:hover { background: var(--glass-hover); border-color: var(--accent); color: var(--accent); }
+
+#week-btn { width: auto; padding: 0 var(--space-sm); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.5px; color: var(--accent); border-color: var(--accent-dim); }
+
+.badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: var(--danger);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================ MAIN CONTENT */
+#main-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + var(--space-md));
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+#main-content::-webkit-scrollbar { display: none; }
+
+/* ============================================================ BOTTOM NAV */
+#bottom-nav {
+  height: calc(var(--nav-height) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  transition: color var(--dur-fast) var(--ease-smooth),
+              transform var(--dur-fast) var(--ease-spring);
+  position: relative;
+}
+
+.nav-item:active { transform: scale(0.9); }
+
+.nav-icon {
+  font-size: 20px;
+  line-height: 1;
+  transition: transform var(--dur-normal) var(--ease-spring);
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.nav-item.active {
+  color: var(--accent);
+}
+
+.nav-item.active .nav-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+}
+
+/* ============================================================ GLASS CARDS */
+.card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-fast) var(--ease-smooth),
+              box-shadow var(--dur-fast) var(--ease-smooth);
+}
+
+.card:active { border-color: var(--glass-hover); }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.card-action {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Accent cards */
+.card-accent {
+  background: linear-gradient(135deg, rgba(255,153,0,0.08), rgba(255,153,0,0.02));
+  border-color: rgba(255,153,0,0.2);
+}
+
+.card-success {
+  background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(52,211,153,0.02));
+  border-color: rgba(52,211,153,0.2);
+}
+
+.card-danger {
+  background: linear-gradient(135deg, rgba(248,113,113,0.08), rgba(248,113,113,0.02));
+  border-color: rgba(248,113,113,0.2);
+}
+
+/* ============================================================ VIEWS */
+.view {
+  padding: var(--space-md);
+  display: none;
+  animation: viewEnter var(--dur-normal) var(--ease-smooth);
+}
+
+.view.active { display: block; }
+
+@keyframes viewEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.view-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.view-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+/* ============================================================ STAT BLOCKS */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.stat-grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.stat-block {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-value.accent  { color: var(--accent); }
+.stat-value.success { color: var(--success); }
+.stat-value.danger  { color: var(--danger); }
+.stat-value.warning { color: var(--warning); }
+.stat-value.info    { color: var(--info); }
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-tertiary);
+}
+
+.stat-delta {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.stat-delta.up   { color: var(--success); }
+.stat-delta.down { color: var(--danger); }
+
+/* ============================================================ TIER BADGE */
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tier-badge.fp   { background: rgba(167,139,250,0.15); color: var(--tier-fp); border: 1px solid rgba(167,139,250,0.3); }
+.tier-badge.f    { background: rgba(96,165,250,0.15);  color: var(--tier-f);  border: 1px solid rgba(96,165,250,0.3); }
+.tier-badge.g    { background: rgba(52,211,153,0.15);  color: var(--tier-g);  border: 1px solid rgba(52,211,153,0.3); }
+.tier-badge.poor { background: rgba(248,113,113,0.15); color: var(--tier-poor); border: 1px solid rgba(248,113,113,0.3); }
+
+/* ============================================================ PROGRESS BAR */
+.progress-bar {
+  height: 4px;
+  background: var(--glass-bg);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: var(--space-xs) 0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  transition: width var(--dur-slow) var(--ease-smooth);
+}
+
+.progress-fill.success { background: var(--success); }
+.progress-fill.danger  { background: var(--danger); }
+.progress-fill.info    { background: var(--info); }
+
+/* ============================================================ LIST ITEMS */
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.list-item-body { flex: 1; min-width: 0; }
+
+.list-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.list-item-meta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ============================================================ SECTION HEADERS */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+}
+
+.section-link {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ============================================================ BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 14px var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  transition: all var(--dur-fast) var(--ease-smooth);
+  cursor: pointer;
+  border: none;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:hover { background: #ffad1f; }
+
+.btn-ghost {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-ghost:hover { background: var(--glass-hover); }
+
+.btn-danger {
+  background: var(--danger-dim);
+  color: var(--danger);
+  border: 1px solid rgba(248,113,113,0.3);
+}
+
+.btn-full { width: 100%; }
+.btn-sm { padding: 8px var(--space-md); font-size: 13px; }
+
+/* ============================================================ MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeIn var(--dur-normal) var(--ease-smooth);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 90vh;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border: 1px solid var(--glass-border);
+  border-bottom: none;
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: sheetUp var(--dur-normal) var(--ease-spring);
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.modal-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+  margin: var(--space-sm) auto;
+  flex-shrink: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-lg) var(--space-md);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 var(--space-lg) calc(var(--space-2xl) + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================ FILE DROP ZONE */
+.drop-zone {
+  border: 2px dashed var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--dur-normal) var(--ease-smooth);
+  background: var(--glass-bg);
+  margin-bottom: var(--space-md);
+}
+
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.drop-zone-icon { font-size: 40px; margin-bottom: var(--space-md); }
+
+.drop-zone-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.drop-zone-sub { font-size: 13px; color: var(--text-secondary); }
+
+.drop-zone input[type="file"] { display: none; }
+
+/* ============================================================ CHART WRAPPER */
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  margin: var(--space-sm) 0;
+}
+
+.chart-wrapper canvas { width: 100% !important; height: 100% !important; }
+
+/* ============================================================ DATA ROWS */
+.data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.data-row:last-child { border-bottom: none; }
+
+.data-row-label { font-size: 13px; color: var(--text-secondary); }
+.data-row-value { font-size: 14px; font-weight: 600; color: var(--text-primary); font-family: var(--font-mono); }
+
+/* ============================================================ WAVE PLAN TABLE */
+.wave-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.wave-table th {
+  text-align: left;
+  color: var(--text-tertiary);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.wave-table td {
+  padding: var(--space-sm);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.wave-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.wave-slot-red   { background: rgba(239,68,68,0.18); color: #fca5a5; border-radius: 4px; padding: 2px 6px; }
+.wave-slot-green { background: rgba(52,211,153,0.15); color: #6ee7b7; border-radius: 4px; padding: 2px 6px; }
+.wave-slot-blue  { background: rgba(96,165,250,0.15); color: #93c5fd; border-radius: 4px; padding: 2px 6px; }
+
+/* ============================================================ TABS */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: var(--space-md);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--dur-fast) var(--ease-smooth);
+  text-align: center;
+}
+
+.tab-btn.active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ============================================================ ALERT ITEM */
+.alert-item {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xs);
+  font-size: 13px;
+  font-weight: 500;
+  align-items: flex-start;
+}
+
+.alert-item.warning { background: var(--warning-dim); color: var(--warning); border: 1px solid rgba(251,191,36,0.2); }
+.alert-item.danger  { background: var(--danger-dim);  color: var(--danger);  border: 1px solid rgba(248,113,113,0.2); }
+.alert-item.info    { background: var(--info-dim);    color: var(--info);    border: 1px solid rgba(96,165,250,0.2); }
+.alert-item.success { background: var(--success-dim); color: var(--success); border: 1px solid rgba(52,211,153,0.2); }
+
+.alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.alert-text { flex: 1; line-height: 1.4; }
+
+/* ============================================================ SEARCH */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 10px var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.search-bar input::placeholder { color: var(--text-tertiary); }
+
+.search-bar .search-icon { color: var(--text-tertiary); font-size: 14px; }
+
+/* ============================================================ EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+.empty-state-icon { font-size: 48px; margin-bottom: var(--space-md); opacity: 0.4; }
+.empty-state-title { font-size: 17px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-xs); }
+.empty-state-sub { font-size: 13px; color: var(--text-tertiary); line-height: 1.5; }
+
+/* ============================================================ TOAST */
+#toast-container {
+  position: fixed;
+  top: calc(var(--safe-top) + var(--header-height) + var(--space-sm));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  pointer-events: none;
+  width: calc(100% - var(--space-xl));
+  max-width: 390px;
+}
+
+.toast {
+  background: var(--bg-elevated);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-card);
+  animation: toastIn var(--dur-normal) var(--ease-spring);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.toast.success { border-color: rgba(52,211,153,0.3); color: var(--success); }
+.toast.error   { border-color: rgba(248,113,113,0.3); color: var(--danger); }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================ LOADING */
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--glass-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: var(--space-xl) auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================ SCORE RING */
+.score-ring {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.score-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.score-ring-bg {
+  fill: none;
+  stroke: var(--glass-border);
+  stroke-width: 5;
+}
+
+.score-ring-fill {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-smooth);
+}
+
+.score-ring-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.score-ring-number {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.score-ring-label {
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================ DRIVER ROW */
+.driver-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.driver-rank {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.driver-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.driver-info { flex: 1; min-width: 0; }
+
+.driver-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.driver-meta { font-size: 11px; color: var(--text-secondary); }
+
+.driver-score {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+/* ============================================================ FINANCE */
+.finance-total {
+  text-align: center;
+  padding: var(--space-lg) 0;
+}
+
+.finance-total-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-xs);
+}
+
+.finance-total-value {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  color: var(--success);
+  line-height: 1;
+}
+
+.finance-total-sub {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: var(--space-xs);
+}
+
+/* ============================================================ TAG CHIPS */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+}
+
+.tag-chip.hv  { background: rgba(96,165,250,0.1);  color: var(--info);    border-color: rgba(96,165,250,0.2); }
+.tag-chip.hc  { background: rgba(167,139,250,0.1); color: #c4b5fd;       border-color: rgba(167,139,250,0.2); }
+
+/* ============================================================ UTILITIES */
+.flex         { display: flex; }
+.flex-col     { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm       { gap: var(--space-sm); }
+.gap-md       { gap: var(--space-md); }
+.mt-sm        { margin-top: var(--space-sm); }
+.mt-md        { margin-top: var(--space-md); }
+.mt-lg        { margin-top: var(--space-lg); }
+.mb-sm        { margin-bottom: var(--space-sm); }
+.mb-md        { margin-bottom: var(--space-md); }
+.text-sm      { font-size: 12px; }
+.text-xs      { font-size: 11px; }
+.text-accent  { color: var(--accent); }
+.text-muted   { color: var(--text-secondary); }
+.font-mono    { font-family: var(--font-mono); }
+.font-bold    { font-weight: 700; }
+.hidden       { display: none !important; }
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="status-bar-spacer"></div>
+
+    <header id="app-header">
+      <div class="header-content">
+        <div class="header-left">
+          <span class="header-logo">⬡</span>
+          <span class="header-title">Work Companion</span>
+        </div>
+        <div class="header-right">
+          <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+            <span class="icon">🔔</span>
+            <span class="badge" id="notif-badge" hidden>0</span>
+          </button>
+          <button class="icon-btn" id="week-btn" aria-label="Current week">
+            <span id="week-label">W—</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content"></main>
+
+    <nav id="bottom-nav">
+      <button class="nav-item active" data-view="home">
+        <span class="nav-icon">⊡</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" data-view="metrics">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Metrics</span>
+      </button>
+      <button class="nav-item" data-view="waveplan">
+        <span class="nav-icon">◉</span>
+        <span class="nav-label">Wave Plan</span>
+      </button>
+      <button class="nav-item" data-view="finance">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Finance</span>
+      </button>
+      <button class="nav-item" data-view="analytics">
+        <span class="nav-icon">⬡</span>
+        <span class="nav-label">Analytics</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="import-modal" class="modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2 class="modal-title" id="import-modal-title">Import File</h2>
+        <button class="icon-btn" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="import-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <script>
+/* ============================================================
+   Storage — IndexedDB wrapper for all app data
+   ============================================================ */
+
+const DB_NAME = 'WorkCompanion';
+const DB_VERSION = 1;
+
+const STORES = {
+  metrics:   { keyPath: 'id', autoIncrement: true },
+  waveplans: { keyPath: 'id', autoIncrement: true },
+  invoices:  { keyPath: 'id', autoIncrement: true },
+  documents: { keyPath: 'id', autoIncrement: true },
+  settings:  { keyPath: 'key' }
+};
+
+class AppStorage {
+  constructor() {
+    this.db = null;
+    this._ready = this._init();
+  }
+
+  _init() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        for (const [name, opts] of Object.entries(STORES)) {
+          if (!db.objectStoreNames.contains(name)) {
+            const store = db.createObjectStore(name, opts);
+            // Add indexes where useful
+            if (name === 'metrics')   store.createIndex('week',   'week',   { unique: false });
+            if (name === 'waveplans') store.createIndex('date',   'date',   { unique: false });
+            if (name === 'invoices')  store.createIndex('payDate','payDate',{ unique: false });
+            if (name === 'documents') store.createIndex('type',   'type',   { unique: false });
+          }
+        }
+      };
+
+      req.onsuccess  = (e) => { this.db = e.target.result; resolve(this.db); };
+      req.onerror    = (e) => reject(e.target.error);
+    });
+  }
+
+  async ready() { return this._ready; }
+
+  async add(store, data) {
+    await this.ready();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(store, 'readwrite');
+      const req = tx.objectStore(store).add({ ...data, createdAt: Date.now() });
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = () => reject(req.error);
+    });
+  }
+
+  async put(store, data) {
+    await this.ready();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction(store, 'readwrite');
+      const req = tx.objectStore(store).put({ ...data, updatedAt: Date.now() });
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = () => reject(req.error);
+    });
+  }
+
+  async getAll(store, indexName, query) {
+    await this.ready();
+    return new Promise((resolve, reject) => {
+      const tx  = this.db.transaction(store, 'readonly');
+      const os  = tx.objectStore(store);
+      const req = indexName ? os.index(indexName).getAll(query) : os.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = () => reject(req.error);
+    });
+  }
+
+  async get(store, key) {
+    await this.ready();
+    return new Promise((resolve, reject) => {
+      const tx  = this.db.transaction(store, 'readonly');
+      const req = tx.objectStore(store).get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = () => reject(req.error);
+    });
+  }
+
+  async delete(store, key) {
+    await this.ready();
+    return new Promise((resolve, reject) => {
+      const tx  = this.db.transaction(store, 'readwrite');
+      const req = tx.objectStore(store).delete(key);
+      req.onsuccess = () => resolve();
+      req.onerror   = () => reject(req.error);
+    });
+  }
+
+  async getSetting(key, defaultVal = null) {
+    const rec = await this.get('settings', key);
+    return rec ? rec.value : defaultVal;
+  }
+
+  async setSetting(key, value) {
+    return this.put('settings', { key, value });
+  }
+
+  // Helper: get sorted + filtered metrics
+  async getMetrics({ limit = 50 } = {}) {
+    const all = await this.getAll('metrics');
+    return all.sort((a, b) => b.createdAt - a.createdAt).slice(0, limit);
+  }
+
+  async getWaveplans({ limit = 20 } = {}) {
+    const all = await this.getAll('waveplans');
+    return all.sort((a, b) => b.createdAt - a.createdAt).slice(0, limit);
+  }
+
+  async getInvoices({ limit = 50 } = {}) {
+    const all = await this.getAll('invoices');
+    return all.sort((a, b) => b.createdAt - a.createdAt).slice(0, limit);
+  }
+}
+
+// Singleton
+const storage = new AppStorage();
+window.storage = storage;
+
+// Settings with defaults
+const DEFAULT_SETTINGS = {
+  taxRate:    0.20,
+  userName:   'Me',
+  driverName: '',
+  driverId:   ''
+};
+
+async function getSettings() {
+  const s = {};
+  for (const [k, v] of Object.entries(DEFAULT_SETTINGS)) {
+    s[k] = await storage.getSetting(k, v);
+  }
+  return s;
+}
+window.getSettings = getSettings;
+
+/* ============================================================
+   Parser — XLSX / CSV / Image parsing for imported files
+   Uses SheetJS (xlsx) loaded via CDN for spreadsheet parsing
+   ============================================================ */
+
+// Dynamically load SheetJS if not present
+function loadSheetJS() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+/* ============================================================
+   METRICS XLSX PARSER
+   Understands the DA Stats spreadsheet format:
+   - Sheet: Metrics (driver performance, scores, tiers)
+   - Sheet: Concessions
+   - Sheet: DNR By Driver(DXM4) / DCE1 / DWN2
+   ============================================================ */
+async function parseMetricsXLSX(file) {
+  await loadSheetJS();
+  const data = await file.arrayBuffer();
+  const wb   = XLSX.read(data, { type: 'array', cellDates: true });
+
+  const result = {
+    week:       null,
+    station:    'DXM4',
+    drivers:    [],
+    concessions:[],
+    dnr:        [],
+    rawSheets:  {}
+  };
+
+  // Parse Metrics sheet
+  if (wb.SheetNames.includes('Metrics')) {
+    const ws   = wb.Sheets['Metrics'];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+
+    // The real data starts at row index 1 (header row = 0)
+    const headerRow = rows[0] || [];
+    // Find column indices by header content
+    const colIdx = {};
+    headerRow.forEach((h, i) => {
+      const hs = String(h).trim();
+      if (hs === 'S No.')             colIdx.sno = i;
+      if (hs === 'Transporter ID')    colIdx.tid = i;
+      if (hs === 'Name')              colIdx.name = i;
+      if (hs === 'DWC 2.0 %')        colIdx.dwc = i;
+      if (hs === 'Penalty')           colIdx.penalty = i;
+      if (hs === 'Points Deduction')  colIdx.deduction = i;
+      if (hs === 'Status')            colIdx.status = i;
+      if (hs === 'Total Score')       colIdx.score = i;
+      if (hs === 'Delivered parcels') colIdx.parcels = i;
+      if (hs === 'DCR')               colIdx.dcr = i;
+      if (hs === 'DSC DPMO')          colIdx.dsc = i;
+      if (hs === 'Photo on delivery') colIdx.pod = i;
+      if (hs === 'Contact Compliance')colIdx.cc = i;
+      if (hs === 'IADC')              colIdx.iadc = i;
+      if (hs === 'CDF')               colIdx.cdf = i;
+      if (hs === 'Pickup')            colIdx.pickup = i;
+      if (hs === 'Speed Violation')   colIdx.speed = i;
+      if (hs === 'Signal Violation')  colIdx.signal = i;
+      if (hs === 'Distractions')      colIdx.distraction = i;
+      if (hs === 'Following Distance')colIdx.following = i;
+      if (hs === 'Rescue Pay')        colIdx.rescue = i;
+      if (hs === 'Induction')         colIdx.induction = i;
+      // Pay tier columns
+      if (hs === 'Super Stars - £178') colIdx.paySuperStar = i;
+      if (hs === 'FP - £168')         colIdx.payFP = i;
+      if (hs === 'F - £153')          colIdx.payF = i;
+      if (hs === 'G - £147')          colIdx.payG = i;
+      if (hs === 'F - £136.70')       colIdx.payFr = i;
+      if (hs === 'P - £136.70')       colIdx.payP = i;
+    });
+
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const sno = r[colIdx.sno];
+      if (!sno || isNaN(Number(sno))) continue;
+
+      const status = String(r[colIdx.status] || '').trim();
+      const score  = parseFloat(r[colIdx.score]) || 0;
+      const parcels= parseInt(r[colIdx.parcels]) || 0;
+      const dcr    = parseFloat(r[colIdx.dcr]) || 0;
+      const name   = String(r[colIdx.name] || '').trim();
+      const tid    = String(r[colIdx.tid] || '').trim();
+
+      if (!name) continue;
+
+      // Determine pay amount
+      let payAmount = 0;
+      let payTier   = status;
+      const shifts  = r[colIdx.paySuperStar] || r[colIdx.payFP] || r[colIdx.payF] || r[colIdx.payG] || r[colIdx.payFr] || r[colIdx.payP];
+      const numShifts = parseFloat(shifts) || 0;
+
+      if (r[colIdx.paySuperStar] && !isNaN(parseFloat(r[colIdx.paySuperStar]))) payAmount = parseFloat(r[colIdx.paySuperStar]) * 178;
+      else if (r[colIdx.payFP] && !isNaN(parseFloat(r[colIdx.payFP])))          payAmount = parseFloat(r[colIdx.payFP]) * 168;
+      else if (r[colIdx.payF] && !isNaN(parseFloat(r[colIdx.payF])))            payAmount = parseFloat(r[colIdx.payF]) * 153;
+      else if (r[colIdx.payG] && !isNaN(parseFloat(r[colIdx.payG])))            payAmount = parseFloat(r[colIdx.payG]) * 147;
+      else if (r[colIdx.payFr] && !isNaN(parseFloat(r[colIdx.payFr])))          payAmount = parseFloat(r[colIdx.payFr]) * 136.70;
+      else if (r[colIdx.payP] && !isNaN(parseFloat(r[colIdx.payP])))            payAmount = parseFloat(r[colIdx.payP]) * 136.70;
+
+      const rescuePay = parseFloat(r[colIdx.rescue]) || 0;
+
+      result.drivers.push({
+        rank:       Number(sno),
+        tid,
+        name,
+        status,
+        score,
+        parcels,
+        dcr,
+        dsc:        parseFloat(r[colIdx.dsc]) || 0,
+        pod:        parseFloat(r[colIdx.pod]) || 0,
+        cc:         parseFloat(r[colIdx.cc]) || 0,
+        iadc:       parseFloat(r[colIdx.iadc]) || 0,
+        cdf:        parseFloat(r[colIdx.cdf]) || 0,
+        pickup:     parseFloat(r[colIdx.pickup]) || 0,
+        speed:      parseFloat(r[colIdx.speed]) || 0,
+        signal:     parseFloat(r[colIdx.signal]) || 0,
+        distraction:parseFloat(r[colIdx.distraction]) || 0,
+        following:  parseFloat(r[colIdx.following]) || 0,
+        penalty:    String(r[colIdx.penalty] || '').trim(),
+        deduction:  parseFloat(r[colIdx.deduction]) || 0,
+        rescuePay,
+        payAmount,
+        numShifts
+      });
+    }
+  }
+
+  // Parse Concessions sheet
+  if (wb.SheetNames.includes('Concessions')) {
+    const ws   = wb.Sheets['Concessions'];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    result.concessions = rows.map(r => ({
+      tracking:    r['Tracking number'],
+      deliveryDate:r['Delivery Date'],
+      concessionDate: r['Concession Date'],
+      daId:        r['Delivery Associate Name'] || r['DA'],
+      daName:      r['Delivery Associate Name'],
+      address:     r['Address'],
+      postalId:    r['Postal ID'],
+      dropoff:     r['Drop-off Location']
+    })).filter(r => r.tracking);
+  }
+
+  // Parse DNR sheets
+  for (const sheetName of wb.SheetNames) {
+    if (!sheetName.startsWith('DNR')) continue;
+    const ws   = wb.Sheets[sheetName];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    const station = sheetName.match(/\((\w+)\)/)?.[1] || 'UNKNOWN';
+
+    // Extract week from first row
+    if (rows[0]?.['Week'] && !result.week) {
+      result.week = String(rows[0]['Week']);
+    }
+
+    for (const r of rows) {
+      result.dnr.push({
+        station,
+        week:       r['Week'],
+        daName:     r['Delivery Associate Name'],
+        daId:       r['Delivery Associate ID'],
+        delivered:  parseFloat(r['Delivered Packages']) || 0,
+        dnrCount:   parseFloat(r['Packages Delivered Not Received (DNR)']) || 0,
+        dnrDpmo:    parseFloat(r['DNR DPMO']) || 0,
+        dispatched: parseFloat(r['Dispatched Packages']) || 0,
+        rts:        parseFloat(r['Packages Returned to Station (RTS)']) || 0,
+        rtsDpmo:    parseFloat(r['Return To Station DPMO']) || 0
+      });
+    }
+  }
+
+  // Derive week from DNR data if not found
+  if (!result.week && result.dnr.length) {
+    result.week = result.dnr[0].week;
+  }
+
+  return result;
+}
+
+/* ============================================================
+   WAVE PLAN IMAGE PARSER
+   Parses the wave plan image using Claude AI (vision)
+   to extract structured data from the table format.
+   ============================================================ */
+async function parseWavePlanImage(file) {
+  // Convert image to base64
+  const base64 = await fileToBase64(file);
+  const mimeType = file.type || 'image/jpeg';
+
+  // Use Claude API to extract structured data
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mimeType, data: base64 }
+            },
+            {
+              type: 'text',
+              text: `Extract the wave plan data from this Amazon DSP wave plan image.
+Return ONLY valid JSON with this exact structure:
+{
+  "date": "YYYY-MM-DD or null",
+  "station": "station code or null",
+  "waves": [
+    {
+      "loadTime": "HH:MM",
+      "holdingTime": "HH:MM",
+      "stagingArea": "area code",
+      "drivers": [
+        {
+          "name": "driver first name",
+          "route": "route code e.g. 2 CRPD - A125 - A.9",
+          "vanId": "3-letter code",
+          "flags": ["HV", "HC"] // any special flags shown
+        }
+      ]
+    }
+  ],
+  "totalDrivers": 0
+}
+If you cannot extract specific fields, use null. Include all waves visible.`
+            }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) throw new Error('API error');
+    const data = await response.json();
+    const text = data.content?.find(c => c.type === 'text')?.text || '{}';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    parsed._source = 'ai';
+    return parsed;
+
+  } catch (err) {
+    console.warn('AI wave parse failed, using stub:', err);
+    // Return stub structure if AI fails
+    return {
+      date:   new Date().toISOString().split('T')[0],
+      station: 'DXM4',
+      waves:  [{ loadTime: null, holdingTime: null, stagingArea: null, drivers: [] }],
+      totalDrivers: 0,
+      _source: 'stub'
+    };
+  }
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function tierClass(status) {
+  if (!status) return '';
+  const s = status.toLowerCase();
+  if (s.includes('fantastic_plus') || s.includes('fantastic plus')) return 'fp';
+  if (s.includes('fantastic'))  return 'f';
+  if (s.includes('great'))      return 'g';
+  if (s.includes('poor'))       return 'poor';
+  return '';
+}
+
+function tierLabel(status) {
+  if (!status) return '—';
+  const s = status.toLowerCase();
+  if (s.includes('fantastic_plus') || s.includes('fantastic plus')) return 'Fantastic+';
+  if (s.includes('fantastic'))  return 'Fantastic';
+  if (s.includes('great'))      return 'Great';
+  if (s.includes('poor'))       return 'Poor';
+  return status;
+}
+
+function formatPct(val) {
+  if (val === null || val === undefined || isNaN(val)) return '—';
+  return (val * 100).toFixed(1) + '%';
+}
+
+function formatCurrency(val) {
+  if (!val && val !== 0) return '—';
+  return '£' + Number(val).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function formatNum(val, decimals = 0) {
+  if (val === null || val === undefined || isNaN(val)) return '—';
+  return Number(val).toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function getWeekLabel(weekStr) {
+  if (!weekStr) return 'Unknown';
+  // e.g. "2026-26" -> "W26 · 2026"
+  const parts = String(weekStr).split('-');
+  if (parts.length === 2) return `W${parts[1]} · ${parts[0]}`;
+  return weekStr;
+}
+
+window.parseMetricsXLSX   = parseMetricsXLSX;
+window.parseWavePlanImage  = parseWavePlanImage;
+window.tierClass           = tierClass;
+window.tierLabel           = tierLabel;
+window.formatPct           = formatPct;
+window.formatCurrency      = formatCurrency;
+window.formatNum           = formatNum;
+window.getWeekLabel        = getWeekLabel;
+
+/* ============================================================
+   Charts — Lightweight canvas-based charts (no dependency)
+   Mobile-optimised, dark theme, animated
+   ============================================================ */
+
+const CHART_COLORS = {
+  accent:  '#ff9900',
+  success: '#34d399',
+  info:    '#60a5fa',
+  danger:  '#f87171',
+  warning: '#fbbf24',
+  purple:  '#a78bfa',
+  grid:    'rgba(255,255,255,0.06)',
+  text:    'rgba(240,240,248,0.4)'
+};
+
+/* ============ LINE CHART ============ */
+function drawLineChart(canvas, datasets, labels, opts = {}) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = rect.height;
+  const PAD = { top: 12, right: 12, bottom: 28, left: 38 };
+  const chartW = W - PAD.left - PAD.right;
+  const chartH = H - PAD.top  - PAD.bottom;
+
+  // Find range
+  const allVals = datasets.flatMap(d => d.data.filter(v => v != null));
+  const minVal  = opts.min ?? Math.min(...allVals) * 0.9;
+  const maxVal  = opts.max ?? Math.max(...allVals) * 1.1;
+  const range   = maxVal - minVal || 1;
+
+  const xScale = (i) => PAD.left + (i / (labels.length - 1 || 1)) * chartW;
+  const yScale = (v) => PAD.top  + chartH - ((v - minVal) / range) * chartH;
+
+  // Grid lines
+  ctx.strokeStyle = CHART_COLORS.grid;
+  ctx.lineWidth = 1;
+  const gridLines = 4;
+  for (let i = 0; i <= gridLines; i++) {
+    const y = PAD.top + (i / gridLines) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + chartW, y);
+    ctx.stroke();
+
+    // Y labels
+    const val = maxVal - (i / gridLines) * range;
+    ctx.fillStyle = CHART_COLORS.text;
+    ctx.font = `${9 * dpr / dpr}px -apple-system`;
+    ctx.textAlign = 'right';
+    ctx.fillText(opts.yFormat ? opts.yFormat(val) : Math.round(val), PAD.left - 4, y + 3);
+  }
+
+  // X labels
+  ctx.textAlign = 'center';
+  labels.forEach((lbl, i) => {
+    const x = xScale(i);
+    ctx.fillStyle = CHART_COLORS.text;
+    ctx.font = `9px -apple-system`;
+    ctx.fillText(String(lbl).slice(-4), x, H - 6);
+  });
+
+  // Draw each dataset
+  datasets.forEach((ds) => {
+    const color  = CHART_COLORS[ds.color] || ds.color || CHART_COLORS.accent;
+    const points = ds.data.map((v, i) => ({ x: xScale(i), y: yScale(v ?? minVal) }));
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
+    grad.addColorStop(0, color.replace(')', ',0.2)').replace('rgb', 'rgba').replace('#', '').length < 9 ?
+      hexToRgba(color, 0.2) : color);
+    grad.addColorStop(1, hexToRgba(color, 0));
+
+    ctx.beginPath();
+    points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.lineTo(points[points.length - 1].x, PAD.top + chartH);
+    ctx.lineTo(points[0].x, PAD.top + chartH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.lineJoin = 'round';
+    ctx.lineCap  = 'round';
+    points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.stroke();
+
+    // Dots
+    points.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(10,10,15,0.8)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  });
+}
+
+/* ============ BAR CHART ============ */
+function drawBarChart(canvas, data, labels, opts = {}) {
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx  = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = rect.height;
+  const PAD = { top: 12, right: 8, bottom: 32, left: 38 };
+  const chartW = W - PAD.left - PAD.right;
+  const chartH = H - PAD.top  - PAD.bottom;
+
+  const maxVal  = opts.max ?? Math.max(...data) * 1.1 || 1;
+  const barGap  = 6;
+  const barW    = (chartW / data.length) - barGap;
+  const colors  = opts.colors || data.map(() => CHART_COLORS.accent);
+
+  // Grid
+  ctx.strokeStyle = CHART_COLORS.grid;
+  ctx.lineWidth = 1;
+  [0, 0.25, 0.5, 0.75, 1].forEach(f => {
+    const y = PAD.top + chartH * (1 - f);
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + chartW, y);
+    ctx.stroke();
+    ctx.fillStyle = CHART_COLORS.text;
+    ctx.font = '9px -apple-system';
+    ctx.textAlign = 'right';
+    ctx.fillText(opts.yFormat ? opts.yFormat(maxVal * f) : Math.round(maxVal * f), PAD.left - 4, y + 3);
+  });
+
+  // Bars
+  data.forEach((val, i) => {
+    const x  = PAD.left + i * (barW + barGap);
+    const bH = (val / maxVal) * chartH;
+    const y  = PAD.top + chartH - bH;
+    const color = Array.isArray(colors) ? colors[i] || CHART_COLORS.accent
+                                        : CHART_COLORS[colors] || CHART_COLORS.accent;
+
+    // Gradient bar
+    const grad = ctx.createLinearGradient(0, y, 0, y + bH);
+    grad.addColorStop(0, hexToRgba(color, 0.9));
+    grad.addColorStop(1, hexToRgba(color, 0.4));
+
+    ctx.beginPath();
+    roundedRect(ctx, x, y, barW, bH, 3);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Label
+    ctx.fillStyle = CHART_COLORS.text;
+    ctx.font = '9px -apple-system';
+    ctx.textAlign = 'center';
+    const lbl = String(labels[i] || '');
+    ctx.fillText(lbl.length > 6 ? lbl.slice(0, 6) : lbl, x + barW / 2, H - 8);
+  });
+}
+
+/* ============ DONUT CHART ============ */
+function drawDonutChart(canvas, segments, opts = {}) {
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width  = rect.width  * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx  = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = rect.height;
+  const cx = W / 2;
+  const cy = H / 2;
+  const r  = Math.min(W, H) / 2 - 8;
+  const inner = r * 0.6;
+
+  const total = segments.reduce((s, seg) => s + seg.value, 0) || 1;
+  let angle = -Math.PI / 2;
+
+  segments.forEach(seg => {
+    const sweep = (seg.value / total) * 2 * Math.PI;
+    const color = CHART_COLORS[seg.color] || seg.color || CHART_COLORS.accent;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + sweep);
+    ctx.closePath();
+    ctx.fillStyle = hexToRgba(color, 0.85);
+    ctx.fill();
+    angle += sweep;
+  });
+
+  // Inner hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, inner, 0, 2 * Math.PI);
+  ctx.fillStyle = 'rgba(10,10,15,0.9)';
+  ctx.fill();
+
+  // Center text
+  if (opts.centerText) {
+    ctx.fillStyle = '#f0f0f8';
+    ctx.font = `bold 18px -apple-system`;
+    ctx.textAlign = 'center';
+    ctx.fillText(opts.centerText, cx, cy + 2);
+    if (opts.centerLabel) {
+      ctx.fillStyle = CHART_COLORS.text;
+      ctx.font = '10px -apple-system';
+      ctx.fillText(opts.centerLabel, cx, cy + 16);
+    }
+  }
+}
+
+/* ============ SCORE RING ============ */
+function updateScoreRing(el, score, maxScore = 100) {
+  const svg  = el.querySelector('svg');
+  const fill = el.querySelector('.score-ring-fill');
+  const num  = el.querySelector('.score-ring-number');
+
+  if (!svg || !fill) return;
+
+  const r = 35;
+  const circumference = 2 * Math.PI * r;
+  const pct = Math.max(0, Math.min(1, score / maxScore));
+
+  fill.setAttribute('cx', '40');
+  fill.setAttribute('cy', '40');
+  fill.setAttribute('r',  String(r));
+  fill.style.strokeDasharray  = circumference;
+  fill.style.strokeDashoffset = circumference * (1 - pct);
+
+  const color = pct >= 0.9 ? '#a78bfa'   // FP range
+              : pct >= 0.7 ? '#34d399'    // good
+              : pct >= 0.5 ? '#fbbf24'    // warning
+                           : '#f87171';   // poor
+  fill.style.stroke = color;
+
+  if (num) {
+    num.textContent = Math.round(score);
+    num.style.color = color;
+  }
+}
+
+/* ============ HELPERS ============ */
+function hexToRgba(hex, alpha = 1) {
+  if (hex.startsWith('rgba') || hex.startsWith('rgb')) {
+    return hex.replace(/[\d.]+\)$/, `${alpha})`);
+  }
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+  const r = parseInt(hex.slice(0,2),16);
+  const g = parseInt(hex.slice(2,4),16);
+  const b = parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function roundedRect(ctx, x, y, w, h, r) {
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+window.drawLineChart   = drawLineChart;
+window.drawBarChart    = drawBarChart;
+window.drawDonutChart  = drawDonutChart;
+window.updateScoreRing = updateScoreRing;
+window.hexToRgba       = hexToRgba;
+
+/* ============================================================
+   Home — Dashboard view
+   ============================================================ */
+
+async function renderHome() {
+  const el = document.getElementById('main-content');
+  el.innerHTML = `<div class="view active" id="view-home">
+    <div class="view-title">Dashboard</div>
+    <div class="view-subtitle" id="home-date">Loading…</div>
+
+    <!-- Quick Stats Row -->
+    <div class="stat-grid stat-grid-3" id="home-quick-stats">
+      <div class="stat-block">
+        <div class="stat-value accent" id="hs-total-drivers">—</div>
+        <div class="stat-label">Drivers W26</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value success" id="hs-fp-count">—</div>
+        <div class="stat-label">Fantastic+</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value danger" id="hs-poor-count">—</div>
+        <div class="stat-label">At Risk</div>
+      </div>
+    </div>
+
+    <!-- Latest Metrics Card -->
+    <div class="section-header">
+      <span class="section-title">Latest Metrics</span>
+      <button class="section-link" onclick="app.navigate('metrics')">View All</button>
+    </div>
+    <div class="card" id="home-metrics-card">
+      <div class="empty-state">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-title">No metrics imported</div>
+        <div class="empty-state-sub">Import your weekly DA Stats file to see performance data</div>
+      </div>
+      <button class="btn btn-primary btn-full mt-md" onclick="openImportModal('metrics')">
+        Import Metrics File
+      </button>
+    </div>
+
+    <!-- Wave Plan Card -->
+    <div class="section-header">
+      <span class="section-title">Wave Plan</span>
+      <button class="section-link" onclick="app.navigate('waveplan')">View All</button>
+    </div>
+    <div class="card" id="home-wave-card">
+      <div class="empty-state">
+        <div class="empty-state-icon">🌊</div>
+        <div class="empty-state-title">No wave plan</div>
+        <div class="empty-state-sub">Import a wave plan screenshot to see today's routes</div>
+      </div>
+      <button class="btn btn-ghost btn-full mt-md" onclick="openImportModal('waveplan')">
+        Import Wave Plan
+      </button>
+    </div>
+
+    <!-- Alerts -->
+    <div id="home-alerts"></div>
+
+    <!-- Score Distribution Chart -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Score Distribution</span>
+    </div>
+    <div class="card" id="home-chart-card">
+      <div class="card-header">
+        <span class="card-title">Total Score — W26</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="score-dist-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Drivers Card -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Top Drivers</span>
+    </div>
+    <div class="card" id="home-top-drivers">
+      <div class="empty-state">
+        <div class="empty-state-icon">🏆</div>
+        <div class="empty-state-title">Import metrics to see rankings</div>
+      </div>
+    </div>
+
+    <!-- My Performance (if driver set) -->
+    <div id="home-my-performance"></div>
+
+    <div style="height: var(--space-xl)"></div>
+  </div>`;
+
+  // Set date
+  const d = new Date();
+  document.getElementById('home-date').textContent =
+    d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  // Load data
+  await refreshHomeData();
+}
+
+async function refreshHomeData() {
+  const allMetrics = await storage.getMetrics({ limit: 1 });
+  if (!allMetrics.length) return;
+
+  const latest = allMetrics[0];
+  const drivers = latest.drivers || [];
+
+  // Quick stats
+  const fpCount   = drivers.filter(d => d.status?.toLowerCase().includes('fantastic_plus') || d.status?.toLowerCase().includes('fantastic plus')).length;
+  const poorCount = drivers.filter(d => d.status?.toLowerCase().includes('poor')).length;
+
+  document.getElementById('hs-total-drivers').textContent = formatNum(drivers.length);
+  document.getElementById('hs-fp-count').textContent      = formatNum(fpCount);
+  document.getElementById('hs-poor-count').textContent    = formatNum(poorCount);
+
+  // Metrics card
+  const weekLabel = getWeekLabel(latest.week);
+  document.getElementById('home-metrics-card').innerHTML = `
+    <div class="card-header">
+      <span class="card-title">${weekLabel}</span>
+      <span class="tier-badge fp">Loaded</span>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-block">
+        <div class="stat-value accent">${drivers.length}</div>
+        <div class="stat-label">Drivers</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value">${latest.concessions?.length || 0}</div>
+        <div class="stat-label">Concessions</div>
+      </div>
+    </div>
+    <div class="stat-grid mt-sm">
+      <div class="stat-block">
+        <div class="stat-value success">${fpCount}</div>
+        <div class="stat-label">Fantastic+</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value danger">${poorCount}</div>
+        <div class="stat-label">Poor</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-full btn-sm mt-md" onclick="app.navigate('metrics')">Full Report →</button>
+  `;
+
+  // Score distribution chart
+  const scoreBuckets = [0,0,0,0,0,0]; // <0, 0-19, 20-49, 50-79, 80-99, 100
+  drivers.forEach(d => {
+    const s = d.score;
+    if (s < 0)       scoreBuckets[0]++;
+    else if (s < 20) scoreBuckets[1]++;
+    else if (s < 50) scoreBuckets[2]++;
+    else if (s < 80) scoreBuckets[3]++;
+    else if (s < 100)scoreBuckets[4]++;
+    else             scoreBuckets[5]++;
+  });
+
+  const scoreCanvas = document.getElementById('score-dist-chart');
+  if (scoreCanvas && drivers.length) {
+    setTimeout(() => {
+      drawBarChart(scoreCanvas, scoreBuckets,
+        ['<0','0-19','20-49','50-79','80-99','100'],
+        { colors: ['danger','warning','warning','info','success','purple'].map(c => {
+          const m = { danger:'#f87171', warning:'#fbbf24', info:'#60a5fa', success:'#34d399', purple:'#a78bfa' };
+          return m[c];
+        }) }
+      );
+    }, 50);
+  }
+
+  // Top 5 drivers by score
+  const top5 = [...drivers].sort((a,b) => b.score - a.score).slice(0,5);
+  document.getElementById('home-top-drivers').innerHTML = top5.map((d, i) => `
+    <div class="driver-row">
+      <span class="driver-rank">${i+1}</span>
+      <div class="driver-avatar">${initials(d.name)}</div>
+      <div class="driver-info">
+        <div class="driver-name">${d.name}</div>
+        <div class="driver-meta">${tierLabel(d.status)} · ${formatNum(d.parcels)} parcels</div>
+      </div>
+      <div class="driver-score" style="color:${scoreColor(d.score)}">${d.score}</div>
+    </div>
+  `).join('');
+
+  // Alerts
+  const alerts = buildAlerts(latest);
+  const alertsEl = document.getElementById('home-alerts');
+  if (alerts.length) {
+    alertsEl.innerHTML = `
+      <div class="section-header mt-lg">
+        <span class="section-title">Alerts</span>
+        <span class="tag-chip">${alerts.length}</span>
+      </div>
+      ${alerts.map(a => `
+        <div class="alert-item ${a.type}">
+          <span class="alert-icon">${a.icon}</span>
+          <span class="alert-text">${a.text}</span>
+        </div>
+      `).join('')}
+    `;
+  }
+
+  // My performance
+  const settings = await getSettings();
+  if (settings.driverId) {
+    const myDriver = drivers.find(d => d.tid === settings.driverId || d.name.toLowerCase().includes(settings.driverName?.toLowerCase()));
+    if (myDriver) renderMyPerformance(myDriver);
+  }
+}
+
+function buildAlerts(data) {
+  const alerts = [];
+  const drivers = data.drivers || [];
+  const poor    = drivers.filter(d => d.status?.toLowerCase().includes('poor'));
+  const penalties = drivers.filter(d => d.penalty && d.penalty.trim());
+
+  if (poor.length > 10) {
+    alerts.push({ type: 'danger', icon: '🚨', text: `${poor.length} drivers currently in Poor standing — action required` });
+  }
+  if (data.concessions?.length > 50) {
+    alerts.push({ type: 'warning', icon: '⚠️', text: `${data.concessions.length} concessions this week — review delivery performance` });
+  }
+  if (penalties.length > 5) {
+    alerts.push({ type: 'warning', icon: '📋', text: `${penalties.length} drivers with penalties on record` });
+  }
+  return alerts;
+}
+
+function renderMyPerformance(driver) {
+  const el = document.getElementById('home-my-performance');
+  el.innerHTML = `
+    <div class="section-header mt-lg">
+      <span class="section-title">My Performance</span>
+      <span class="tier-badge ${tierClass(driver.status)}">${tierLabel(driver.status)}</span>
+    </div>
+    <div class="card card-accent">
+      <div class="flex items-center gap-md">
+        <div class="score-ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="score-ring-bg" cx="40" cy="40" r="35"/>
+            <circle class="score-ring-fill" cx="40" cy="40" r="35"/>
+          </svg>
+          <div class="score-ring-value">
+            <span class="score-ring-number">${driver.score}</span>
+            <span class="score-ring-label">Score</span>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="driver-name" style="font-size:16px;font-weight:700">${driver.name}</div>
+          <div class="data-row">
+            <span class="data-row-label">Parcels</span>
+            <span class="data-row-value">${formatNum(driver.parcels)}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-row-label">DCR</span>
+            <span class="data-row-value">${formatPct(driver.dcr)}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-row-label">POD</span>
+            <span class="data-row-value">${formatPct(driver.pod)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  // Animate ring after render
+  setTimeout(() => {
+    const ring = el.querySelector('.score-ring');
+    if (ring) updateScoreRing(ring, driver.score, 100);
+  }, 100);
+}
+
+function initials(name) {
+  return name.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+}
+
+function scoreColor(s) {
+  if (s >= 95)  return '#a78bfa';
+  if (s >= 80)  return '#34d399';
+  if (s >= 60)  return '#60a5fa';
+  if (s >= 40)  return '#fbbf24';
+  if (s >= 0)   return '#f87171';
+  return '#f87171';
+}
+
+window.renderHome = renderHome;
+window.refreshHomeData = refreshHomeData;
+
+/* ============================================================
+   Metrics — Weekly DA Performance view
+   ============================================================ */
+
+let metricsState = {
+  data:       null,
+  filtered:   [],
+  sortKey:    'score',
+  sortDir:    -1,
+  search:     '',
+  tab:        'all'
+};
+
+async function renderMetrics() {
+  const el = document.getElementById('main-content');
+  el.innerHTML = `<div class="view active" id="view-metrics">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="view-title">Metrics</div>
+        <div class="view-subtitle" id="metrics-week">No data imported</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openImportModal('metrics')">+ Import</button>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="stat-grid mb-md" id="metrics-summary">
+      <div class="stat-block">
+        <div class="stat-value accent" id="ms-total">—</div>
+        <div class="stat-label">Total Drivers</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value" id="ms-avg-score">—</div>
+        <div class="stat-label">Avg Score</div>
+      </div>
+    </div>
+    <div class="stat-grid mb-md">
+      <div class="stat-block">
+        <div class="stat-value success" id="ms-fp">—</div>
+        <div class="stat-label">Fantastic+</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value" id="ms-f">—</div>
+        <div class="stat-label">Fantastic</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value" id="ms-g">—</div>
+        <div class="stat-label">Great</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value danger" id="ms-poor">—</div>
+        <div class="stat-label">Poor</div>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div id="metrics-charts" class="hidden">
+      <div class="card mb-sm">
+        <div class="card-header">
+          <span class="card-title">DCR Distribution</span>
+        </div>
+        <div class="chart-wrapper" style="height:140px">
+          <canvas id="dcr-chart"></canvas>
+        </div>
+      </div>
+      <div class="card mb-sm">
+        <div class="card-header">
+          <span class="card-title">Parcels Delivered</span>
+        </div>
+        <div class="chart-wrapper" style="height:140px">
+          <canvas id="parcels-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-metrics-tab="all" onclick="metricsSetTab('all',this)">All</button>
+      <button class="tab-btn" data-metrics-tab="fp" onclick="metricsSetTab('fp',this)">FP</button>
+      <button class="tab-btn" data-metrics-tab="poor" onclick="metricsSetTab('poor',this)">Poor</button>
+      <button class="tab-btn" data-metrics-tab="penalties" onclick="metricsSetTab('penalties',this)">Penalties</button>
+      <button class="tab-btn" data-metrics-tab="concessions" onclick="metricsSetTab('concessions',this)">Concessions</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="metrics-search" placeholder="Search driver name or ID…" oninput="metricsSearch(this.value)">
+    </div>
+
+    <!-- Sort controls -->
+    <div class="flex gap-sm mb-md" style="flex-wrap:wrap">
+      ${['score','parcels','dcr','concessions','name'].map(k => `
+        <button class="tag-chip" onclick="metricsSort('${k}')" id="ms-sort-${k}"
+          style="${k === 'score' ? 'color:var(--accent);border-color:var(--accent)' : ''}">
+          ${k === 'dcr' ? 'DCR' : k.charAt(0).toUpperCase() + k.slice(1)}
+        </button>
+      `).join('')}
+    </div>
+
+    <!-- Driver list -->
+    <div id="metrics-driver-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-title">No metrics loaded</div>
+        <div class="empty-state-sub">Import a DA Stats XLSX file to see driver performance data</div>
+      </div>
+    </div>
+
+    <div style="height: var(--space-xl)"></div>
+  </div>`;
+
+  await loadMetricsData();
+}
+
+async function loadMetricsData() {
+  const allMetrics = await storage.getMetrics({ limit: 1 });
+  if (!allMetrics.length) return;
+
+  const data = allMetrics[0];
+  metricsState.data     = data;
+  metricsState.filtered = data.drivers || [];
+
+  // Week label
+  document.getElementById('metrics-week').textContent = getWeekLabel(data.week);
+
+  // Counts by tier
+  const drivers = data.drivers || [];
+  const countTier = (t) => drivers.filter(d => (d.status || '').toLowerCase().includes(t)).length;
+  const fpCount   = countTier('fantastic_plus') + drivers.filter(d => {
+    const s = (d.status||'').toLowerCase();
+    return s.includes('fantastic plus');
+  }).length;
+  const fCount  = drivers.filter(d => {
+    const s = (d.status||'').toLowerCase();
+    return s.includes('fantastic') && !s.includes('fantastic_plus') && !s.includes('fantastic plus');
+  }).length;
+  const gCount  = countTier('great');
+  const pCount  = countTier('poor');
+
+  document.getElementById('ms-total').textContent     = drivers.length;
+  document.getElementById('ms-fp').textContent        = fpCount;
+  document.getElementById('ms-f').textContent         = fCount;
+  document.getElementById('ms-g').textContent         = gCount;
+  document.getElementById('ms-poor').textContent      = pCount;
+
+  const avgScore = drivers.length ? (drivers.reduce((s, d) => s + (d.score || 0), 0) / drivers.length) : 0;
+  document.getElementById('ms-avg-score').textContent = avgScore.toFixed(0);
+
+  // Charts
+  document.getElementById('metrics-charts').classList.remove('hidden');
+  setTimeout(() => renderMetricsCharts(drivers), 50);
+
+  // Driver list
+  metricsRenderList();
+}
+
+function renderMetricsCharts(drivers) {
+  // DCR chart — bucket by DCR score
+  const dcrBuckets = [0,0,0,0,0]; // <0.95, 0.95-0.97, 0.97-0.99, 0.99-0.999, 1.0
+  drivers.forEach(d => {
+    const v = d.dcr;
+    if (!v || v === 0)  return;
+    if (v < 0.95)       dcrBuckets[0]++;
+    else if (v < 0.97)  dcrBuckets[1]++;
+    else if (v < 0.99)  dcrBuckets[2]++;
+    else if (v < 1.0)   dcrBuckets[3]++;
+    else                dcrBuckets[4]++;
+  });
+
+  const dcrCanvas = document.getElementById('dcr-chart');
+  if (dcrCanvas) {
+    drawBarChart(dcrCanvas, dcrBuckets,
+      ['<95%','95-97','97-99','99-100','100%'],
+      { colors: ['#f87171','#fbbf24','#60a5fa','#34d399','#a78bfa'] }
+    );
+  }
+
+  // Parcels chart — top 8 by parcel count
+  const top8 = [...drivers].filter(d => d.parcels > 0).sort((a,b) => b.parcels - a.parcels).slice(0,8);
+  const parcelsCanvas = document.getElementById('parcels-chart');
+  if (parcelsCanvas && top8.length) {
+    drawBarChart(parcelsCanvas,
+      top8.map(d => d.parcels),
+      top8.map(d => d.name.split(' ')[0]),
+      { colors: top8.map(() => '#ff9900') }
+    );
+  }
+}
+
+function metricsRenderList() {
+  const { data, filtered, tab } = metricsState;
+  if (!data) return;
+
+  const listEl = document.getElementById('metrics-driver-list');
+
+  if (tab === 'concessions') {
+    const concessions = data.concessions || [];
+    if (!concessions.length) {
+      listEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><div class="empty-state-title">No concessions this week</div></div>';
+      return;
+    }
+    // Group by driver
+    const byDriver = {};
+    concessions.forEach(c => {
+      const k = c.daName || 'Unknown';
+      byDriver[k] = (byDriver[k] || 0) + 1;
+    });
+    const sorted = Object.entries(byDriver).sort((a,b) => b[1]-a[1]);
+    listEl.innerHTML = `
+      <div class="card mb-sm">
+        <div class="card-header">
+          <span class="card-title">Total Concessions</span>
+          <span class="stat-value danger" style="font-size:20px">${concessions.length}</span>
+        </div>
+        ${sorted.map(([name, count]) => `
+          <div class="data-row">
+            <span class="data-row-label">${name.split(' ').slice(0,2).join(' ')}</span>
+            <span class="data-row-value" style="color:${count >= 5 ? 'var(--danger)' : count >= 3 ? 'var(--warning)' : 'var(--text-primary)'}">${count}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    return;
+  }
+
+  if (!filtered.length) {
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No drivers found</div></div>';
+    return;
+  }
+
+  // Get concession counts per driver
+  const concMap = {};
+  (data.concessions || []).forEach(c => {
+    const k = c.daName || '';
+    concMap[k] = (concMap[k] || 0) + 1;
+  });
+
+  listEl.innerHTML = filtered.map(d => {
+    const tc   = tierClass(d.status);
+    const tl   = tierLabel(d.status);
+    const conc = concMap[d.name] || 0;
+    const dcrClass = d.dcr >= 0.99 ? 'success' : d.dcr >= 0.97 ? '' : 'danger';
+
+    return `
+    <div class="card mb-sm" onclick="metricsShowDriver(${JSON.stringify(d).replace(/"/g,"'")})" style="cursor:pointer">
+      <div class="flex items-center gap-md">
+        <div class="driver-avatar">${initials(d.name)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="flex items-center justify-between">
+            <div class="driver-name">${d.name}</div>
+            <span class="tier-badge ${tc}">${tl}</span>
+          </div>
+          <div class="stat-grid stat-grid-3 mt-sm" style="gap:4px">
+            <div style="text-align:center">
+              <div style="font-size:15px;font-weight:700;font-family:var(--font-mono);color:${scoreColor(d.score)}">${d.score}</div>
+              <div class="stat-label">Score</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:13px;font-weight:600;font-family:var(--font-mono)">${formatNum(d.parcels)}</div>
+              <div class="stat-label">Parcels</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:13px;font-weight:600;font-family:var(--font-mono)" class="${dcrClass}">${formatPct(d.dcr)}</div>
+              <div class="stat-label">DCR</div>
+            </div>
+          </div>
+          ${d.penalty || conc ? `
+          <div class="flex gap-sm mt-sm" style="flex-wrap:wrap">
+            ${d.penalty ? `<span class="tag-chip" style="color:var(--danger);border-color:rgba(248,113,113,0.3)">⚠ ${d.penalty}</span>` : ''}
+            ${conc ? `<span class="tag-chip" style="color:var(--warning);border-color:rgba(251,191,36,0.3)">${conc} concession${conc>1?'s':''}</span>` : ''}
+            ${d.deduction ? `<span class="tag-chip" style="color:var(--danger)">-${d.deduction}pts</span>` : ''}
+          </div>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+
+function metricsSearch(val) {
+  metricsState.search = val.toLowerCase();
+  applyMetricsFilters();
+}
+
+function metricsSetTab(tab, btn) {
+  metricsState.tab = tab;
+  document.querySelectorAll('[data-metrics-tab]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyMetricsFilters();
+}
+
+function metricsSort(key) {
+  if (metricsState.sortKey === key) metricsState.sortDir *= -1;
+  else { metricsState.sortKey = key; metricsState.sortDir = -1; }
+
+  document.querySelectorAll('[id^="ms-sort-"]').forEach(b => {
+    b.style.color = '';
+    b.style.borderColor = '';
+  });
+  const activeBtn = document.getElementById(`ms-sort-${key}`);
+  if (activeBtn) { activeBtn.style.color = 'var(--accent)'; activeBtn.style.borderColor = 'var(--accent)'; }
+
+  applyMetricsFilters();
+}
+
+function applyMetricsFilters() {
+  const { data, search, tab, sortKey, sortDir } = metricsState;
+  if (!data) return;
+
+  let drivers = [...(data.drivers || [])];
+
+  // Tab filter
+  if (tab === 'fp')        drivers = drivers.filter(d => (d.status||'').toLowerCase().includes('fantastic'));
+  if (tab === 'poor')      drivers = drivers.filter(d => (d.status||'').toLowerCase().includes('poor'));
+  if (tab === 'penalties') drivers = drivers.filter(d => d.penalty && d.penalty.trim());
+
+  // Search
+  if (search) {
+    drivers = drivers.filter(d =>
+      d.name.toLowerCase().includes(search) ||
+      d.tid.toLowerCase().includes(search)
+    );
+  }
+
+  // Sort
+  const concMap = {};
+  (data.concessions || []).forEach(c => { concMap[c.daName || ''] = (concMap[c.daName||'']||0)+1; });
+
+  drivers.sort((a,b) => {
+    let va, vb;
+    if (sortKey === 'concessions') { va = concMap[a.name]||0; vb = concMap[b.name]||0; }
+    else if (sortKey === 'name')   { return sortDir * a.name.localeCompare(b.name); }
+    else { va = a[sortKey]||0; vb = b[sortKey]||0; }
+    return sortDir * (va - vb);
+  });
+
+  metricsState.filtered = drivers;
+  metricsRenderList();
+}
+
+function metricsShowDriver(driver) {
+  // Show driver detail modal
+  const modal = document.getElementById('import-modal');
+  document.getElementById('import-modal-title').textContent = driver.name.split(' ').slice(0,2).join(' ');
+
+  const dnrData = metricsState.data?.dnr?.filter(d => d.daId === driver.tid) || [];
+  const totalDNR = dnrData.reduce((s,d) => s + (d.dnrCount||0), 0);
+  const totalDelivered = dnrData.reduce((s,d) => s + (d.delivered||0), 0);
+
+  document.getElementById('import-modal-body').innerHTML = `
+    <div class="flex items-center gap-md mb-md">
+      <div class="score-ring">
+        <svg viewBox="0 0 80 80">
+          <circle class="score-ring-bg" cx="40" cy="40" r="35"/>
+          <circle class="score-ring-fill" cx="40" cy="40" r="35"/>
+        </svg>
+        <div class="score-ring-value">
+          <span class="score-ring-number">${driver.score}</span>
+          <span class="score-ring-label">Score</span>
+        </div>
+      </div>
+      <div>
+        <span class="tier-badge ${tierClass(driver.status)}">${tierLabel(driver.status)}</span>
+        <div class="text-sm text-muted mt-sm font-mono">${driver.tid}</div>
+        ${driver.penalty ? `<div class="alert-item warning mt-sm" style="padding:4px 8px;font-size:12px">⚠ ${driver.penalty}</div>` : ''}
+      </div>
+    </div>
+
+    <div class="card mb-sm">
+      <div class="card-title mb-md">Performance Scores</div>
+      ${[
+        ['Total Score', driver.score, 100],
+        ['Delivered Parcels', driver.parcels, null],
+        ['DCR', formatPct(driver.dcr), null],
+        ['Photo on Delivery', formatPct(driver.pod), null],
+        ['Contact Compliance', formatPct(driver.cc), null],
+        ['IADC', formatPct(driver.iadc), null],
+        ['Pickup', driver.pickup || '—', null],
+      ].map(([label, val, max]) => `
+        <div class="data-row">
+          <span class="data-row-label">${label}</span>
+          <span class="data-row-value">${val}</span>
+        </div>
+        ${max ? `<div class="progress-bar"><div class="progress-fill ${val >= 80 ? 'success' : val >= 50 ? '' : 'danger'}" style="width:${Math.min(100,val)}%"></div></div>` : ''}
+      `).join('')}
+    </div>
+
+    <div class="card mb-sm">
+      <div class="card-title mb-md">Safety</div>
+      ${[
+        ['Speed Violations', driver.speed],
+        ['Signal Violations', driver.signal],
+        ['Distractions', driver.distraction],
+        ['Following Distance', driver.following],
+        ['CDF (DPMO)', formatNum(driver.cdf)],
+      ].map(([label, val]) => `
+        <div class="data-row">
+          <span class="data-row-label">${label}</span>
+          <span class="data-row-value" style="color:${val > 0 ? 'var(--danger)' : 'var(--success)'}">${val}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    ${totalDelivered ? `
+    <div class="card mb-sm">
+      <div class="card-title mb-md">DNR Summary</div>
+      <div class="data-row"><span class="data-row-label">Delivered</span><span class="data-row-value">${formatNum(totalDelivered)}</span></div>
+      <div class="data-row"><span class="data-row-label">DNR Count</span><span class="data-row-value" style="color:${totalDNR > 3 ? 'var(--danger)' : 'var(--text-primary)'}">${totalDNR}</span></div>
+    </div>` : ''}
+
+    <div style="height:40px"></div>
+  `;
+
+  modal.hidden = false;
+  setTimeout(() => {
+    const ring = modal.querySelector('.score-ring');
+    if (ring) updateScoreRing(ring, driver.score, 100);
+  }, 50);
+}
+
+function scoreColor(s) {
+  if (s >= 95) return '#a78bfa';
+  if (s >= 80) return '#34d399';
+  if (s >= 60) return '#60a5fa';
+  if (s >= 40) return '#fbbf24';
+  return '#f87171';
+}
+
+function initials(name) {
+  return (name||'').split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+}
+
+window.renderMetrics     = renderMetrics;
+window.metricsSearch     = metricsSearch;
+window.metricsSetTab     = metricsSetTab;
+window.metricsSort       = metricsSort;
+window.metricsShowDriver = metricsShowDriver;
+
+/* ============================================================
+   Wave Plan — Import and view wave plan data
+   ============================================================ */
+
+async function renderWaveplan() {
+  const el = document.getElementById('main-content');
+  el.innerHTML = `<div class="view active" id="view-waveplan">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="view-title">Wave Plans</div>
+        <div class="view-subtitle">Route assignments</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openImportModal('waveplan')">+ Import</button>
+    </div>
+
+    <div id="waveplan-list">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div style="height: var(--space-xl)"></div>
+  </div>`;
+
+  await loadWaveplans();
+}
+
+async function loadWaveplans() {
+  const plans = await storage.getWaveplans({ limit: 20 });
+  const listEl = document.getElementById('waveplan-list');
+
+  if (!plans.length) {
+    listEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🌊</div>
+        <div class="empty-state-title">No wave plans yet</div>
+        <div class="empty-state-sub">Import a wave plan screenshot to extract route assignments, load times, and driver allocations</div>
+      </div>
+      <button class="btn btn-primary btn-full mt-md" onclick="openImportModal('waveplan')">Import Wave Plan Image</button>
+    `;
+    return;
+  }
+
+  listEl.innerHTML = plans.map(plan => renderWaveCard(plan)).join('');
+}
+
+function renderWaveCard(plan) {
+  const date = plan.date ? new Date(plan.date).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'short' }) : 'Unknown date';
+  const totalDrivers = (plan.waves || []).reduce((s, w) => s + (w.drivers?.length || 0), 0);
+
+  return `
+  <div class="card mb-sm">
+    <div class="card-header">
+      <div>
+        <div class="card-title">${date}</div>
+        <div class="text-sm text-muted mt-sm">${plan.station || 'DXM4'} · ${totalDrivers} drivers · ${plan.waves?.length || 0} waves</div>
+      </div>
+      <div class="flex gap-sm">
+        <span class="tag-chip">${plan._source === 'ai' ? '🤖 AI' : '📥'}</span>
+        <button class="icon-btn" onclick="deleteWaveplan(${plan.id})" style="width:28px;height:28px;font-size:11px">✕</button>
+      </div>
+    </div>
+
+    ${(plan.waves || []).map(wave => `
+      <div style="margin-bottom: var(--space-md)">
+        <div class="flex items-center gap-sm mb-sm">
+          <span class="tag-chip" style="background:var(--accent-dim);color:var(--accent);border-color:var(--accent-glow)">
+            📦 ${wave.loadTime || '??:??'} Load
+          </span>
+          ${wave.holdingTime ? `<span class="tag-chip">Hold by ${wave.holdingTime}</span>` : ''}
+          ${wave.stagingArea ? `<span class="tag-chip">Area: ${wave.stagingArea}</span>` : ''}
+        </div>
+
+        <div class="card" style="padding: var(--space-sm);background:rgba(255,255,255,0.02)">
+          <table class="wave-table">
+            <thead>
+              <tr>
+                <th>Driver</th>
+                <th>Route</th>
+                <th>Van</th>
+                <th>Flags</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(wave.drivers || []).map(d => `
+                <tr>
+                  <td>${d.name || '—'}</td>
+                  <td><span class="wave-slot-${routeColor(d.route)} font-mono" style="font-size:10px">${d.route || '—'}</span></td>
+                  <td class="font-mono" style="font-size:11px">${d.vanId || '—'}</td>
+                  <td>
+                    ${(d.flags || []).map(f =>
+                      `<span class="tag-chip ${f.includes('HV') ? 'hv' : f.includes('HC') ? 'hc' : ''}" style="margin:1px;padding:1px 5px;font-size:10px">${f}</span>`
+                    ).join('')}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `).join('')}
+
+    ${plan._source === 'stub' ? `
+      <div class="alert-item warning">
+        <span class="alert-icon">⚠️</span>
+        <span class="alert-text">AI parsing failed — data is a placeholder. Try re-importing a clearer image.</span>
+      </div>
+    ` : ''}
+  </div>
+  `;
+}
+
+function routeColor(route) {
+  if (!route) return 'blue';
+  const r = route.toUpperCase();
+  if (r.includes('CRPD')) return 'red';
+  if (r.includes('TBC'))  return 'green';
+  return 'blue';
+}
+
+async function deleteWaveplan(id) {
+  if (!confirm('Delete this wave plan?')) return;
+  await storage.delete('waveplans', id);
+  showToast('Wave plan deleted', 'success');
+  await loadWaveplans();
+}
+
+window.renderWaveplan   = renderWaveplan;
+window.deleteWaveplan   = deleteWaveplan;
+
+/* ============================================================
+   Finance — Invoice tracking and earnings analytics
+   Derives estimated pay from imported metrics data
+   ============================================================ */
+
+async function renderFinance() {
+  const el = document.getElementById('main-content');
+  el.innerHTML = `<div class="view active" id="view-finance">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="view-title">Finance</div>
+        <div class="view-subtitle">Earnings & tax tracking</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openFinanceSettings()">⚙ Tax Rate</button>
+    </div>
+
+    <!-- Total earnings -->
+    <div class="card card-success mb-md" id="finance-total-card">
+      <div class="finance-total">
+        <div class="finance-total-label">Total Estimated Earnings</div>
+        <div class="finance-total-value" id="fin-total">£0.00</div>
+        <div class="finance-total-sub" id="fin-total-sub">From imported metrics data</div>
+      </div>
+    </div>
+
+    <!-- Summary row -->
+    <div class="stat-grid mb-md">
+      <div class="stat-block">
+        <div class="stat-value accent" id="fin-weeks">0</div>
+        <div class="stat-label">Weeks Data</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value warning" id="fin-tax">£0</div>
+        <div class="stat-label">Est. Tax (20%)</div>
+      </div>
+    </div>
+    <div class="stat-grid mb-md">
+      <div class="stat-block">
+        <div class="stat-value success" id="fin-net">£0</div>
+        <div class="stat-label">Est. Net</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-value info" id="fin-avg-week">£0</div>
+        <div class="stat-label">Avg / Week</div>
+      </div>
+    </div>
+
+    <!-- Tax reminder -->
+    <div class="alert-item info mb-md">
+      <span class="alert-icon">💡</span>
+      <span class="alert-text">Set aside your tax estimate each week. Adjust the rate in settings if needed.</span>
+    </div>
+
+    <!-- Per-driver breakdown (from metrics) -->
+    <div class="section-header">
+      <span class="section-title">Pay Breakdown</span>
+      <span class="text-sm text-muted" id="fin-week-label">—</span>
+    </div>
+    <div id="finance-driver-list">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Pay rate reference -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Pay Rates</span>
+    </div>
+    <div class="card mb-md">
+      ${[
+        ['Super Stars', '£178/shift'],
+        ['Fantastic+',  '£168/shift'],
+        ['Fantastic',   '£153/shift'],
+        ['Great',       '£147/shift'],
+        ['Fair',        '£136.70/shift'],
+        ['Poor',        '£136.70/shift'],
+        ['Rescue Pay',  '£45–160 bonus'],
+        ['Induction',   '£2/occurrence'],
+      ].map(([tier, rate]) => `
+        <div class="data-row">
+          <span class="data-row-label">${tier}</span>
+          <span class="data-row-value font-mono">${rate}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="height: var(--space-xl)"></div>
+  </div>`;
+
+  await loadFinanceData();
+}
+
+async function loadFinanceData() {
+  const allMetrics = await storage.getMetrics({ limit: 20 });
+  const settings   = await getSettings();
+  const taxRate    = settings.taxRate || 0.20;
+
+  if (!allMetrics.length) {
+    document.getElementById('finance-driver-list').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">💷</div>
+        <div class="empty-state-title">No pay data yet</div>
+        <div class="empty-state-sub">Import weekly metrics files to calculate earnings from pay tier data</div>
+      </div>
+      <button class="btn btn-primary btn-full mt-md" onclick="openImportModal('metrics')">Import Metrics</button>
+    `;
+    return;
+  }
+
+  // Calculate totals across all imported weeks
+  let grandTotal = 0;
+  const weekTotals = [];
+
+  allMetrics.forEach(w => {
+    const drivers = w.drivers || [];
+    const weekPay = drivers.reduce((s, d) => s + (d.payAmount || 0) + (d.rescuePay || 0), 0);
+    weekTotals.push({ week: w.week, pay: weekPay, drivers: drivers.length });
+    grandTotal += weekPay;
+  });
+
+  const estTax = grandTotal * taxRate;
+  const estNet = grandTotal - estTax;
+  const avgWeek = weekTotals.length ? grandTotal / weekTotals.length : 0;
+
+  document.getElementById('fin-total').textContent    = formatCurrency(grandTotal);
+  document.getElementById('fin-weeks').textContent    = allMetrics.length;
+  document.getElementById('fin-tax').textContent      = '£' + Math.round(estTax).toLocaleString();
+  document.getElementById('fin-net').textContent      = '£' + Math.round(estNet).toLocaleString();
+  document.getElementById('fin-avg-week').textContent = '£' + Math.round(avgWeek).toLocaleString();
+
+  // Show latest week breakdown
+  const latest = allMetrics[0];
+  document.getElementById('fin-week-label').textContent = getWeekLabel(latest.week);
+
+  const driversWithPay = (latest.drivers || [])
+    .filter(d => d.payAmount > 0)
+    .sort((a,b) => b.payAmount - a.payAmount);
+
+  document.getElementById('finance-driver-list').innerHTML = driversWithPay.length
+    ? driversWithPay.map(d => `
+      <div class="card mb-sm">
+        <div class="flex items-center gap-md">
+          <div class="driver-avatar">${initials(d.name)}</div>
+          <div style="flex:1;min-width:0">
+            <div class="driver-name">${d.name}</div>
+            <div class="driver-meta">${tierLabel(d.status)} · ${d.numShifts} shift${d.numShifts !== 1 ? 's' : ''}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:16px;font-weight:700;color:var(--success);font-family:var(--font-mono)">${formatCurrency(d.payAmount)}</div>
+            ${d.rescuePay ? `<div class="text-sm" style="color:var(--accent)">+${formatCurrency(d.rescuePay)} rescue</div>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('')
+    : `<div class="alert-item info">
+        <span class="alert-icon">ℹ️</span>
+        <span class="alert-text">Pay amounts could not be calculated from this file. Ensure the metrics sheet includes shift/payment columns.</span>
+      </div>`;
+}
+
+function openFinanceSettings() {
+  const modal = document.getElementById('import-modal');
+  document.getElementById('import-modal-title').textContent = 'Tax Settings';
+  document.getElementById('import-modal-body').innerHTML = `
+    <div class="card mb-md">
+      <div class="card-title mb-md">Tax Rate</div>
+      <div class="data-row">
+        <span class="data-row-label">Current rate</span>
+        <span class="data-row-value" id="current-tax-display">Loading…</span>
+      </div>
+      <div class="mt-md">
+        <input type="range" id="tax-rate-slider" min="0" max="50" step="1" value="20"
+          style="width:100%;accent-color:var(--accent)"
+          oninput="document.getElementById('tax-rate-val').textContent=this.value+'%'">
+        <div class="flex justify-between mt-sm">
+          <span class="text-sm text-muted">0%</span>
+          <span class="text-sm text-accent font-bold" id="tax-rate-val">20%</span>
+          <span class="text-sm text-muted">50%</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveTaxRate()">Save Rate</button>
+  `;
+
+  getSettings().then(s => {
+    const rate = Math.round((s.taxRate || 0.20) * 100);
+    document.getElementById('current-tax-display').textContent = rate + '%';
+    document.getElementById('tax-rate-slider').value = rate;
+    document.getElementById('tax-rate-val').textContent = rate + '%';
+  });
+
+  modal.hidden = false;
+}
+
+async function saveTaxRate() {
+  const rate = parseInt(document.getElementById('tax-rate-slider').value) / 100;
+  await storage.setSetting('taxRate', rate);
+  closeModal();
+  showToast(`Tax rate set to ${Math.round(rate*100)}%`, 'success');
+  await loadFinanceData();
+}
+
+function initials(name) {
+  return (name||'').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+}
+
+window.renderFinance      = renderFinance;
+window.openFinanceSettings= openFinanceSettings;
+window.saveTaxRate        = saveTaxRate;
+
+/* ============================================================
+   Analytics — Performance trends over time
+   ============================================================ */
+
+async function renderAnalytics() {
+  const el = document.getElementById('main-content');
+  el.innerHTML = `<div class="view active" id="view-analytics">
+    <div class="view-title">Analytics</div>
+    <div class="view-subtitle">Performance trends over time</div>
+
+    <div id="analytics-content">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div style="height: var(--space-xl)"></div>
+  </div>`;
+
+  await loadAnalyticsData();
+}
+
+async function loadAnalyticsData() {
+  const allMetrics = await storage.getMetrics({ limit: 20 });
+  const contentEl  = document.getElementById('analytics-content');
+
+  if (allMetrics.length < 1) {
+    contentEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📈</div>
+        <div class="empty-state-title">No data for analytics</div>
+        <div class="empty-state-sub">Import multiple weeks of metrics to see performance trends and comparisons</div>
+      </div>
+      <button class="btn btn-primary btn-full mt-md" onclick="openImportModal('metrics')">Import Metrics</button>
+    `;
+    return;
+  }
+
+  // Sort by week (oldest first for charts)
+  const sorted = [...allMetrics].sort((a,b) => String(a.week).localeCompare(String(b.week)));
+
+  // Build per-week aggregates
+  const weekData = sorted.map(w => {
+    const drivers = w.drivers || [];
+    const validDrivers = drivers.filter(d => d.score !== undefined && d.score !== null);
+    return {
+      week:       w.week,
+      label:      getWeekLabel(w.week),
+      avgScore:   avg(validDrivers.map(d => d.score)),
+      totalParcels: sum(drivers.map(d => d.parcels)),
+      fpCount:    drivers.filter(d => (d.status||'').toLowerCase().includes('fantastic')).length,
+      poorCount:  drivers.filter(d => (d.status||'').toLowerCase().includes('poor')).length,
+      totalDrivers: drivers.length,
+      concessions: w.concessions?.length || 0,
+      avgDCR:     avg(drivers.filter(d => d.dcr > 0).map(d => d.dcr))
+    };
+  });
+
+  const latest  = weekData[weekData.length - 1];
+  const prev    = weekData[weekData.length - 2];
+  const labels  = weekData.map(w => `W${String(w.week).split('-')[1] || w.week}`);
+
+  contentEl.innerHTML = `
+    <!-- Summary comparison -->
+    ${prev ? `
+    <div class="section-header">
+      <span class="section-title">Week-on-Week</span>
+      <span class="text-sm text-muted">${latest.label} vs ${prev.label}</span>
+    </div>
+    <div class="stat-grid mb-md">
+      ${deltaCard('Avg Score', latest.avgScore?.toFixed(0), prev.avgScore?.toFixed(0), '')}
+      ${deltaCard('Fantastic+', latest.fpCount, prev.fpCount, '')}
+    </div>
+    <div class="stat-grid mb-md">
+      ${deltaCard('Poor Count', latest.poorCount, prev.poorCount, '', true)}
+      ${deltaCard('Concessions', latest.concessions, prev.concessions, '', true)}
+    </div>
+    ` : ''}
+
+    <!-- Score trend -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Score Trend</span>
+    </div>
+    <div class="card mb-sm">
+      <div class="card-header">
+        <span class="card-title">Average Total Score</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="score-trend-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Parcel trend -->
+    <div class="card mb-sm">
+      <div class="card-header">
+        <span class="card-title">Total Parcels Delivered</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="parcels-trend-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Concession trend -->
+    <div class="card mb-sm">
+      <div class="card-header">
+        <span class="card-title">Concessions per Week</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="concessions-trend-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Standing distribution -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Standing Distribution</span>
+      <span class="text-sm text-muted">${latest.label}</span>
+    </div>
+    <div class="card mb-sm">
+      <div style="display:flex;gap:var(--space-md);align-items:center">
+        <div style="flex-shrink:0;width:120px;height:120px">
+          <canvas id="standing-donut"></canvas>
+        </div>
+        <div style="flex:1" id="standing-legend"></div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="section-header mt-lg">
+      <span class="section-title">Insights</span>
+    </div>
+    <div id="analytics-insights"></div>
+
+    <!-- DNR Analysis -->
+    <div class="section-header mt-lg">
+      <span class="section-title">DNR Analysis</span>
+      <span class="text-sm text-muted">${latest.label}</span>
+    </div>
+    <div id="analytics-dnr"></div>
+  `;
+
+  // Render charts after layout
+  setTimeout(() => {
+    renderAnalyticsCharts(weekData, labels, latest, sorted);
+  }, 50);
+}
+
+function renderAnalyticsCharts(weekData, labels, latest, sorted) {
+  // Score trend
+  const scoreCanvas = document.getElementById('score-trend-chart');
+  if (scoreCanvas && weekData.length > 0) {
+    drawLineChart(scoreCanvas,
+      [{ data: weekData.map(w => w.avgScore || 0), color: 'accent' }],
+      labels, { min: 0, max: 110 }
+    );
+  }
+
+  // Parcels trend
+  const parcelsCanvas = document.getElementById('parcels-trend-chart');
+  if (parcelsCanvas && weekData.length > 0) {
+    drawLineChart(parcelsCanvas,
+      [{ data: weekData.map(w => w.totalParcels || 0), color: 'success' }],
+      labels, { yFormat: v => Math.round(v/1000)+'k' }
+    );
+  }
+
+  // Concessions trend
+  const concCanvas = document.getElementById('concessions-trend-chart');
+  if (concCanvas && weekData.length > 0) {
+    drawBarChart(concCanvas,
+      weekData.map(w => w.concessions),
+      labels,
+      { colors: weekData.map(w => w.concessions > 100 ? '#f87171' : w.concessions > 50 ? '#fbbf24' : '#34d399') }
+    );
+  }
+
+  // Standing donut
+  const donutCanvas = document.getElementById('standing-donut');
+  const lastDrivers = sorted[sorted.length - 1]?.drivers || [];
+  if (donutCanvas && lastDrivers.length) {
+    const fp   = lastDrivers.filter(d => (d.status||'').toLowerCase().includes('fantastic')).length;
+    const g    = lastDrivers.filter(d => (d.status||'').toLowerCase().includes('great')).length;
+    const poor = lastDrivers.filter(d => (d.status||'').toLowerCase().includes('poor')).length;
+    const other = lastDrivers.length - fp - g - poor;
+
+    drawDonutChart(donutCanvas, [
+      { value: fp,    color: 'purple', label: 'Fantastic+' },
+      { value: g,     color: 'success', label: 'Great' },
+      { value: other, color: 'info', label: 'Other' },
+      { value: poor,  color: 'danger', label: 'Poor' }
+    ], { centerText: lastDrivers.length, centerLabel: 'Drivers' });
+
+    document.getElementById('standing-legend').innerHTML = [
+      ['#a78bfa', 'Fantastic+', fp],
+      ['#34d399', 'Great', g],
+      ['#60a5fa', 'Other', other],
+      ['#f87171', 'Poor', poor]
+    ].map(([color, label, count]) => `
+      <div class="data-row" style="padding:4px 0;border:none">
+        <div class="flex items-center gap-sm">
+          <div style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0"></div>
+          <span class="data-row-label">${label}</span>
+        </div>
+        <span class="data-row-value">${count}</span>
+      </div>
+    `).join('');
+  }
+
+  // Insights
+  renderInsights(weekData, sorted);
+
+  // DNR analysis
+  renderDNRAnalysis(sorted[sorted.length - 1]);
+}
+
+function renderInsights(weekData, sorted) {
+  const insights = [];
+  const latest = weekData[weekData.length - 1];
+  const prev   = weekData[weekData.length - 2];
+
+  if (prev) {
+    const scoreDelta = (latest.avgScore || 0) - (prev.avgScore || 0);
+    if (Math.abs(scoreDelta) > 2) {
+      insights.push({
+        type: scoreDelta > 0 ? 'success' : 'warning',
+        icon: scoreDelta > 0 ? '📈' : '📉',
+        text: `Average score ${scoreDelta > 0 ? 'increased' : 'decreased'} by ${Math.abs(scoreDelta).toFixed(1)} points vs last week`
+      });
+    }
+
+    if (latest.poorCount > prev.poorCount + 5) {
+      insights.push({ type: 'danger', icon: '🚨', text: `Poor standings increased by ${latest.poorCount - prev.poorCount} this week — review performance` });
+    }
+    if (latest.concessions > prev.concessions * 1.2) {
+      insights.push({ type: 'warning', icon: '⚠️', text: `Concessions up ${Math.round((latest.concessions/prev.concessions - 1)*100)}% week-on-week` });
+    }
+    if (latest.fpCount > prev.fpCount) {
+      insights.push({ type: 'success', icon: '⭐', text: `${latest.fpCount - prev.fpCount} more drivers achieved Fantastic+ this week` });
+    }
+  }
+
+  // Multi-week patterns
+  if (weekData.length >= 3) {
+    const avgPoor = avg(weekData.map(w => w.poorCount));
+    if (latest.poorCount < avgPoor * 0.8) {
+      insights.push({ type: 'success', icon: '🏆', text: `Poor standings are 20%+ below your average — great week!` });
+    }
+  }
+
+  if (!insights.length) {
+    insights.push({ type: 'info', icon: '📊', text: 'Import more weeks of data to generate trend insights' });
+  }
+
+  document.getElementById('analytics-insights').innerHTML =
+    insights.map(i => `
+      <div class="alert-item ${i.type} mb-sm">
+        <span class="alert-icon">${i.icon}</span>
+        <span class="alert-text">${i.text}</span>
+      </div>
+    `).join('');
+}
+
+function renderDNRAnalysis(weekData) {
+  const el = document.getElementById('analytics-dnr');
+  if (!weekData) { el.innerHTML = ''; return; }
+
+  const allDNR = weekData.dnr || [];
+  if (!allDNR.length) {
+    el.innerHTML = '<div class="alert-item info"><span class="alert-icon">ℹ️</span><span class="alert-text">No DNR data in this file</span></div>';
+    return;
+  }
+
+  // Top DNR offenders
+  const topDNR = [...allDNR]
+    .filter(d => d.dnrCount > 0)
+    .sort((a,b) => b.dnrCount - a.dnrCount)
+    .slice(0,5);
+
+  el.innerHTML = `
+    <div class="card mb-sm">
+      <div class="card-title mb-md">Top DNR Drivers</div>
+      ${topDNR.map(d => `
+        <div class="driver-row">
+          <div class="driver-avatar" style="width:28px;height:28px;font-size:10px">${initials(d.daName)}</div>
+          <div class="driver-info">
+            <div class="driver-name" style="font-size:12px">${d.daName?.split(' ').slice(0,2).join(' ')}</div>
+            <div class="driver-meta">${d.station} · ${d.delivered} delivered</div>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--danger)">${d.dnrCount}</div>
+            <div class="stat-label">${formatNum(d.dnrDpmo)} DPMO</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function deltaCard(label, current, previous, unit, lowerIsBetter = false) {
+  const curr = parseFloat(current) || 0;
+  const prev = parseFloat(previous) || 0;
+  const diff = curr - prev;
+  const isGood = lowerIsBetter ? diff <= 0 : diff >= 0;
+  const arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '→';
+  const deltaClass = diff === 0 ? '' : isGood ? 'up' : 'down';
+
+  return `
+    <div class="stat-block">
+      <div class="stat-value ${isGood && diff !== 0 ? 'success' : !isGood && diff !== 0 ? 'danger' : ''}">${current}${unit}</div>
+      <div class="stat-label">${label}</div>
+      ${diff !== 0 && prev ? `<div class="stat-delta ${deltaClass}">${arrow} ${Math.abs(diff).toFixed(diff % 1 === 0 ? 0 : 1)}${unit} vs prev</div>` : '<div class="stat-delta">—</div>'}
+    </div>
+  `;
+}
+
+function avg(arr) {
+  const valid = arr.filter(v => v !== null && v !== undefined && !isNaN(v));
+  return valid.length ? valid.reduce((s,v) => s+v, 0) / valid.length : 0;
+}
+
+function sum(arr) {
+  return arr.filter(v => !isNaN(v)).reduce((s,v) => s+v, 0);
+}
+
+function initials(name) {
+  return (name||'').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+}
+
+window.renderAnalytics = renderAnalytics;
+
+/* ============================================================
+   App — Router, navigation, import modal, toast system
+   ============================================================ */
+
+const VIEWS = {
+  home:      renderHome,
+  metrics:   renderMetrics,
+  waveplan:  renderWaveplan,
+  finance:   renderFinance,
+  analytics: renderAnalytics
+};
+
+const app = {
+  currentView: null,
+
+  async init() {
+    // Wire bottom nav
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.navigate(btn.dataset.view);
+      });
+    });
+
+    // Wire modal close
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+    // Week label
+    const now = new Date();
+    const week = getISOWeek(now);
+    document.getElementById('week-label').textContent = `W${week}`;
+
+    // Navigate to home
+    await this.navigate('home');
+  },
+
+  async navigate(view) {
+    if (!VIEWS[view]) return;
+
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.view === view);
+    });
+
+    this.currentView = view;
+    await VIEWS[view]();
+
+    // Scroll to top
+    document.getElementById('main-content').scrollTop = 0;
+  }
+};
+
+/* ============================================================
+   IMPORT MODAL
+   ============================================================ */
+function openImportModal(type) {
+  const modal     = document.getElementById('import-modal');
+  const titleEl   = document.getElementById('import-modal-title');
+  const bodyEl    = document.getElementById('import-modal-body');
+
+  if (type === 'metrics') {
+    titleEl.textContent = 'Import Metrics File';
+    bodyEl.innerHTML = `
+      <p class="text-muted mb-md" style="font-size:14px;line-height:1.5">
+        Upload your weekly DA Stats <strong style="color:var(--text-primary)">.xlsx</strong> file.
+        Driver scores, tiers, concessions and DNR data will be extracted automatically.
+      </p>
+      <label class="drop-zone" id="metrics-drop" for="metrics-file-input">
+        <div class="drop-zone-icon">📊</div>
+        <div class="drop-zone-title">Tap to select file</div>
+        <div class="drop-zone-sub">Supports .xlsx · DA Stats format</div>
+        <input type="file" id="metrics-file-input" accept=".xlsx,.xls" onchange="handleMetricsFile(this.files[0])">
+      </label>
+      <div id="import-progress" class="hidden">
+        <div class="loading-spinner"></div>
+        <div style="text-align:center;color:var(--text-secondary);font-size:14px;margin-top:8px" id="import-status">Parsing file…</div>
+      </div>
+    `;
+    setupDropZone('metrics-drop', 'metrics-file-input', handleMetricsFile);
+
+  } else if (type === 'waveplan') {
+    titleEl.textContent = 'Import Wave Plan';
+    bodyEl.innerHTML = `
+      <p class="text-muted mb-md" style="font-size:14px;line-height:1.5">
+        Upload a screenshot or photo of the wave plan. AI will extract load times, routes, and driver assignments.
+      </p>
+      <label class="drop-zone" id="wave-drop" for="wave-file-input">
+        <div class="drop-zone-icon">🌊</div>
+        <div class="drop-zone-title">Tap to select image</div>
+        <div class="drop-zone-sub">Photo or screenshot · JPG, PNG, HEIC</div>
+        <input type="file" id="wave-file-input" accept="image/*" capture="environment" onchange="handleWavePlanFile(this.files[0])">
+      </label>
+      <div id="import-progress" class="hidden">
+        <div class="loading-spinner"></div>
+        <div style="text-align:center;color:var(--text-secondary);font-size:14px;margin-top:8px" id="import-status">Analysing image with AI…</div>
+      </div>
+      <div class="alert-item info mt-md">
+        <span class="alert-icon">💡</span>
+        <span class="alert-text">For best results, use a clear, well-lit screenshot of the full wave plan table.</span>
+      </div>
+    `;
+    setupDropZone('wave-drop', 'wave-file-input', handleWavePlanFile);
+  }
+
+  modal.hidden = false;
+}
+
+function setupDropZone(zoneId, inputId, handler) {
+  const zone  = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+  if (!zone || !input) return;
+
+  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const file = e.dataTransfer?.files[0];
+    if (file) handler(file);
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('import-modal');
+  modal.hidden = true;
+  // Reset body for next open
+  document.getElementById('import-modal-body').innerHTML = '';
+}
+
+/* ============================================================
+   FILE HANDLERS
+   ============================================================ */
+async function handleMetricsFile(file) {
+  if (!file) return;
+  showImportProgress('Parsing spreadsheet…');
+
+  try {
+    const data = await parseMetricsXLSX(file);
+
+    setImportStatus('Saving data…');
+
+    // Save to storage
+    await storage.add('metrics', {
+      week:        data.week,
+      station:     data.station,
+      drivers:     data.drivers,
+      concessions: data.concessions,
+      dnr:         data.dnr,
+      fileName:    file.name
+    });
+
+    closeModal();
+    showToast(`✓ Imported ${data.drivers.length} drivers for ${getWeekLabel(data.week)}`, 'success');
+
+    // Refresh current view
+    if (app.currentView) await app.navigate(app.currentView);
+
+  } catch (err) {
+    console.error('Metrics import error:', err);
+    hideImportProgress();
+    showToast('Failed to parse file — check it is a valid DA Stats xlsx', 'error');
+  }
+}
+
+async function handleWavePlanFile(file) {
+  if (!file) return;
+  showImportProgress('Analysing image with AI…');
+
+  try {
+    const data = await parseWavePlanImage(file);
+
+    setImportStatus('Saving wave plan…');
+
+    await storage.add('waveplans', {
+      date:    data.date,
+      station: data.station,
+      waves:   data.waves,
+      _source: data._source,
+      fileName: file.name
+    });
+
+    closeModal();
+    const waveCount   = data.waves?.length || 0;
+    const driverCount = (data.waves || []).reduce((s,w) => s + (w.drivers?.length || 0), 0);
+    showToast(`✓ Wave plan imported: ${waveCount} waves, ${driverCount} drivers`, 'success');
+
+    if (app.currentView) await app.navigate(app.currentView);
+
+  } catch (err) {
+    console.error('Wave plan import error:', err);
+    hideImportProgress();
+    showToast('Failed to parse wave plan image', 'error');
+  }
+}
+
+function showImportProgress(msg) {
+  const p = document.getElementById('import-progress');
+  if (p) {
+    p.classList.remove('hidden');
+    document.getElementById('import-status').textContent = msg;
+  }
+  // Disable drop zone
+  const drop = document.querySelector('.drop-zone');
+  if (drop) drop.style.opacity = '0.4';
+}
+
+function setImportStatus(msg) {
+  const s = document.getElementById('import-status');
+  if (s) s.textContent = msg;
+}
+
+function hideImportProgress() {
+  const p = document.getElementById('import-progress');
+  if (p) p.classList.add('hidden');
+  const drop = document.querySelector('.drop-zone');
+  if (drop) drop.style.opacity = '1';
+}
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${type === 'success' ? '✓' : '✕'}</span> ${message}`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-8px)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+function getISOWeek(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  storage.ready().then(() => app.init()).catch(err => {
+    console.error('Storage init failed:', err);
+    showToast('Storage error — please reload', 'error');
+  });
+});
+
+// Expose globals
+window.app              = app;
+window.openImportModal  = openImportModal;
+window.closeModal       = closeModal;
+window.showToast        = showToast;
+window.handleMetricsFile   = handleMetricsFile;
+window.handleWavePlanFile  = handleWavePlanFile;
+
+  </script>
+</body>
+</html>
